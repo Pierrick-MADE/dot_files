@@ -1,0 +1,385 @@
+;==========================================================
+;
+;
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+;
+;
+;   To learn more about how to configure Polybar
+;   go to https://github.com/jaagr/polybar
+;
+;   The README contains alot of information
+;
+;==========================================================
+
+[colors]
+;background = ${xrdb:color0:#222}
+background = #222
+background-alt = #444
+;foreground = ${xrdb:color7:#222}
+foreground = #dfdfdf
+foreground-alt = #555
+primary = #ffb52a
+secondary = #e60053
+alert = #bd2c40
+
+;==========================================================
+[bar/main]
+modules-left = i3
+modules-center = spotify
+modules-right = network pulseaudio xbacklight memory cpu battery temperature unread_mail date
+separator = " | "
+
+monitor = ${env:MONITOR}
+width = 100%
+height = 18
+;offset-x = 1%
+;offset-y = 1%
+radius = 0.0
+fixed-center = false
+bottom = true
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 3
+line-color = #f00
+
+underline-size = 1
+
+border-size = 0
+border-top-size = 3
+border-color = #222
+
+padding-left = O
+padding-right = 0
+
+module-margin-left = 1
+module-margin-right = 1
+
+font-0 = fixed:pixelsize=10;1
+font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
+font-2 = siji:pixelsize=10;1
+font-3 = Font Awesome 5 Free:pixelsize=11;1
+font-4 = Font Awesome 5 Free Solid:pixelsize=11;1
+font-5 = Font Awesome 5 Brands:pixelsize=11;1
+
+tray-position = right
+tray-padding = 2
+;tray-transparent = true
+;tray-background = #0063ff
+
+wm-restack = i3
+
+;override-redirect = true
+
+;scroll-up = i3wm-wsnext
+;scroll-down = i3wm-wsprev
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+;==========================================================
+;==========================================================
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:30:...%
+
+;==========================================================
+[module/filesystem]
+type = internal/fs
+interval = 10000
+
+;mount-1 = /
+mount-0 = /mnt/data
+label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %free%
+label-unmounted = %mountpoint% not mounted
+label-unmounted-foreground = ${colors.foreground-alt}
+
+;==========================================================
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = true
+
+; Only show workspaces on the same output as the bar
+pin-workspaces = false
+
+label-mode-padding = 2
+label-mode-foreground = #000
+label-mode-background = ${colors.primary}
+
+; focused = Active workspace on focused monitor
+label-focused = %index%
+label-focused-background = ${colors.background-alt}
+label-focused-underline= ${colors.primary}
+label-focused-padding = 2
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %index%
+label-unfocused-padding = 2
+
+; visible = Active workspace on unfocused monitor
+label-visible = %index%
+label-visible-background = ${self.label-focused-background}
+label-visible-underline = ${colors.background-alt}
+label-visible-padding = ${self.label-focused-padding}
+
+; urgent = Workspace with urgency hint set
+label-urgent = %index%
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 2
+
+;==========================================================
+[module/xbacklight]
+type = internal/xbacklight
+
+format = <bar>
+format-prefix = "Light : "
+format-prefix-foreground = ${colors.foreground-alt}
+bar-width = 10
+bar-indicator = |
+bar-indicator-foreground = #fff
+bar-indicator-font = 2
+bar-fill = ─
+bar-fill-font = 2
+bar-fill-foreground = #9f78e1
+bar-empty = ─
+bar-empty-font = 2
+bar-empty-foreground = ${colors.foreground-alt}
+
+;==========================================================
+[module/backlight-acpi]
+inherit = module/xbacklight
+type = internal/backlight
+card = intel_backlight
+
+;==========================================================
+[module/cpu]
+type = internal/cpu
+interval = 0.5
+format-prefix = %{A1:gnome-terminal -e htop:}CPU : %{A}
+format-prefix-foreground = ${colors.foreground-alt}
+format =%{A1:gnome-terminal -e htop:} <ramp-coreload> %{A}
+ramp-coreload-0 = ▁
+ramp-coreload-0-font = 2
+ramp-coreload-0-foreground = #aaff77
+ramp-coreload-1 = ▂
+ramp-coreload-1-font = 2
+ramp-coreload-1-foreground = #aaff77
+ramp-coreload-2 = ▃
+ramp-coreload-2-font = 2
+ramp-coreload-2-foreground = #aaff77
+ramp-coreload-3 = ▄
+ramp-coreload-3-font = 2
+ramp-coreload-3-foreground = #aaff77
+ramp-coreload-4 = ▅
+ramp-coreload-4-font = 2
+ramp-coreload-4-foreground = #fba922
+ramp-coreload-5 = ▆
+ramp-coreload-5-font = 2
+ramp-coreload-5-foreground = #fba922
+ramp-coreload-6 = ▇
+ramp-coreload-6-font = 2
+ramp-coreload-6-foreground = #ff5555
+ramp-coreload-7 = █
+ramp-coreload-7-font = 2
+ramp-coreload-7-foreground = #ff5555
+
+;==========================================================
+[module/memory]
+type = internal/memory
+interval = 2
+format-prefix = %{A1:gnome-terminal -e htop:}RAM : %{A}
+format-prefix-foreground = ${colors.foreground-alt}
+;format-underline = #69CBFF
+format = %{A1:gnome-terminal -e htop:}<label>%{A}
+label = %percentage_used%%
+
+;==========================================================
+[module/network]
+type = internal/network
+interface = wlp59s0
+
+interval = 3.0
+
+; Accumulate values from all interfaces
+; when querying for up/downspeed rate
+accumulate-stats = true
+
+; Consider an `UNKNOWN` interface state as up.
+; Some devices have an unknown state, even when they're running
+unknown-as-up = true
+
+; Available tags:
+;   <label-connected> (default)
+format-connected = %{A1:gnome-terminal -e nmtui:}<label-connected>%{A}
+
+; Available tags:
+;   <label-disconnected> (default)
+format-disconnected = %{A1:gnome-terminal -e nmtui:}<label-disconnected>%{A}
+
+; Available tokens:
+;   %ifname%    [wireless+wired]
+;   %local_ip%  [wireless+wired]
+;   %local_ip6% [wireless+wired]
+;   %essid%     [wireless]
+;   %signal%    [wireless]
+;   %upspeed%   [wireless+wired]
+;   %downspeed% [wireless+wired]
+;   %linkspeed% [wired]
+label-connected =  %upspeed%  %downspeed%
+label-connected-foreground = ${colors.foreground-alt}
+
+; Available tokens:
+;   %ifname%    [wireless+wired]
+; Default: (none)
+label-disconnected = not connected
+label-disconnected-foreground = ${colors.foreground-alt}
+
+;==========================================================
+[module/date]
+type = internal/date
+interval = 5
+format =%{A1:chromium-browser --new-window --app=https\://calendar.google.com/calendar/r/customweek?pli=1:} <label> %{A}
+date = " %Y-%m-%d"
+time = %H:%M:%S
+
+format-underline = #9393CC
+
+label =  %date% %time%
+
+;==========================================================
+[module/pulseaudio]
+type = internal/pulseaudio
+
+format-volume = <label-volume> <bar-volume>
+label-volume = VOL :
+label-volume-foreground = ${colors.foreground-alt}
+
+label-muted = muted
+label-muted-foreground = #666
+
+bar-volume-width = 10
+bar-volume-foreground-0 = #55aa55
+bar-volume-foreground-1 = #55aa55
+bar-volume-foreground-2 = #55aa55
+bar-volume-foreground-3 = #55aa55
+bar-volume-foreground-4 = #55aa55
+bar-volume-foreground-5 = #f5a70a
+bar-volume-foreground-6 = #ff5555
+bar-volume-gradient = false
+bar-volume-indicator = |
+bar-volume-indicator-font = 2
+bar-volume-fill = ─
+bar-volume-fill-font = 2
+bar-volume-empty = ─
+bar-volume-empty-font = 2
+bar-volume-empty-foreground = ${colors.foreground-alt}
+
+;==========================================================
+[module/battery]
+type = internal/battery
+battery = BAT0
+adapter = AC
+full-at = 98
+
+format-discharging-prefix = "BAT : "
+format-discharging-prefix-foreground = ${colors.foreground-alt}
+
+format-charging-prefix = "CHR : "
+format-charging-prefix-foreground = ${colors.foreground-alt}
+
+time-format = %H:%M
+
+; Available tags:
+;   <label-charging> (default)
+;   <bar-capacity>
+;   <ramp-capacity>
+;   <animation-charging>
+format-charging = <label-charging>
+format-charging-underline = #66CC00
+
+; Available tags:
+;   <label-discharging> (default)
+;   <bar-capacity>
+;   <ramp-capacity>
+;   <animation-discharging>
+format-discharging = <label-discharging>
+format-discharging-underline = #66CC00
+
+; Available tokens:
+;   %percentage% (default)
+;   %time%
+;   %consumption% (shows current charge rate in watts)
+label-charging = [%percentage%%/%time%]
+
+; Available tokens:
+;   %percentage% (default)
+;   %time%
+;   %consumption% (shows current discharge rate in watts)
+;label-discharging = Discharging %percentage%%
+label-discharging = [%percentage%%/%time%]
+
+; Available tokens:
+;   %percentage% (default)
+label-full = Fully charged
+
+;==========================================================
+[module/temperature]
+type = internal/temperature
+thermal-zone = 0
+warn-temperature = 60
+
+format = <label>
+format-underline = #FFFF00
+format-warn = <label-warn>
+format-warn-underline = #FF9900
+
+label = %temperature-c%
+label-warn = %temperature-c%
+label-warn-foreground = ${colors.secondary}
+
+;==========================================================
+[module/unread_mail]
+type = custom/script
+
+;format-prefix-foreground = ${colors.foreground-alt}
+;label-font = 2
+;format-underline = #9393CC
+format-underline = #FF5C96
+click-left=  thunderbird &
+format =   <label>
+exec = python ~/.config/polybar/unseen_mail.py
+interval = 30
+
+;==========================================================
+[module/spotify]
+type = custom/script
+interval = 2
+format-prefix = " "
+format = <label>
+
+click-left= dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
+click-right=dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
+exec = python ~/.config/polybar/spotify.py -f '{artist}: {song}'
+format-underline = #1db954
+
+
+;==========================================================
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+
+;==========================================================
+[global/wm]
+margin-top = 5
+margin-bottom = 5
